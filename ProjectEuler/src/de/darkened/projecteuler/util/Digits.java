@@ -22,10 +22,6 @@ public class Digits {
         return digitCount == 9;
     }
 
-    public static boolean isPandigital(int number) {
-        return isPandigital(new int[] {number});
-    }
-
     public static int horner(int number, int base, int[] digits) {
         int digitCount = 0;
         while(number > 0) {
