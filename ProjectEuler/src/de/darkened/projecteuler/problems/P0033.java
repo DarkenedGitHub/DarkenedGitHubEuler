@@ -1,5 +1,6 @@
 package de.darkened.projecteuler.problems;
 
+import de.darkened.projecteuler.util.MathMore;
 import de.darkened.projecteuler.util.Timer;
 
 public class P0033 {
@@ -23,23 +24,9 @@ public class P0033 {
             }
         }
         System.out.println("product: " + (numeratorProduct + "/" + denominatorProduct));
-        System.out.println("result: " + (denominatorProduct / gcd(numeratorProduct, denominatorProduct)));
+        System.out.println("result: " + (denominatorProduct / MathMore.gcd(numeratorProduct, denominatorProduct)));
         
         Timer.stop();
     }
     
-    private static int gcd(int a, int b) {
-        if (a > b) {
-            int c = b;
-            b = a;
-            a = c;
-        }
-        while (b % a != 0) {
-            int c = b % a;
-            b = a;
-            a = c;
-        }
-        return a;
-    }
-
 }

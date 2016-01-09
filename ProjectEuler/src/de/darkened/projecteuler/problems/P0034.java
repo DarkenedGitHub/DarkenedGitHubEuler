@@ -1,5 +1,6 @@
 package de.darkened.projecteuler.problems;
 
+import de.darkened.projecteuler.util.Digits;
 import de.darkened.projecteuler.util.Timer;
 
 public class P0034 {
@@ -8,6 +9,7 @@ public class P0034 {
         Timer.start();
         
         int bound = 1000000; // 7*9! is below that, so for higher numbers, the facturial-sum is definitely lower
+        int[] digits = new int[7];
         
         int[] factorial = new int[10];
         factorial[0] = 1;
@@ -18,10 +20,9 @@ public class P0034 {
         int result = 0;
         for (int number = 10; number < bound || number == 1999999; number++) {
             int factorialSum = 0;
-            int hornered = number;
-            while (hornered > 0) {
-                factorialSum += factorial[hornered % 10];
-                hornered /= 10;
+            int digitCount = Digits.horner(number, 10, digits);
+            for (int digitIndex = 0; digitIndex < digitCount; digitIndex++) {
+                factorialSum += factorial[digits[digitIndex]];
             }
             if (factorialSum == number) {
                 result += number;
