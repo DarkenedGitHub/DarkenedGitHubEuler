@@ -21,6 +21,25 @@ public class Digits {
         }
         return digitCount == 9;
     }
+    
+    public static boolean isNDigitPandigital(int number) {
+        int digitMask = 1;
+        int rest = number;
+        int resultingMask = 2;
+        while (rest > 0) {
+            resultingMask = resultingMask << 1;
+            int digit = rest % 10;
+            int mask = 1 << digit;
+            if ((digitMask & mask) == 0) {
+                digitMask += mask;
+            } else {
+                return false;
+            }
+            rest /= 10;
+        }
+        resultingMask--;
+        return digitMask == resultingMask;
+    }
 
     public static int horner(int number, int base, int[] digits) {
         int digitCount = 0;
