@@ -56,6 +56,24 @@ public class BigDecimalInt {
 		return new BigDecimalInt(sumParts);
 	}
 	
+	public BigDecimalInt multiply(int factor) {
+	    int maxLength = parts.length + (int) Math.ceil(Math.log(factor) / Math.log(MODULO));
+	    int[] productParts = new int[maxLength];
+	    long overflow = 0;
+	    for (int i = 0; i < parts.length; i++) {
+	        overflow += parts[i] * factor;
+	        productParts[i] = (int) (overflow % MODULO);
+	        overflow /= (long) MODULO;
+	    }
+	    int expandedIndex = parts.length;
+	    while (overflow > 0L) {
+            productParts[expandedIndex] = (int) (overflow % MODULO);
+            overflow /= (long) MODULO;
+            expandedIndex++;
+	    }
+	    return new BigDecimalInt(productParts);
+	}
+	
 	public int[] toDigits() {
 		int leadingZeros = 0;
 		for (int leadingPart = parts[parts.length - 1]; leadingPart > 0; leadingPart /= BASE) {
