@@ -38,7 +38,7 @@ public abstract class AbstractSieve {
 	}
 	
 	private void fill(int bound) {
-		for (int i = maxCheckedValue + 1; i <= bound; i += fillStepWidth) {
+		for (int i = maxCheckedValue + fillStepWidth; i <= bound; i += fillStepWidth) {
 			values[i] = processValue(i, values[i]);
 		}
 		maxCheckedValue = bound;
@@ -55,6 +55,10 @@ public abstract class AbstractSieve {
 			fill(x);
 		}
 		return values[x];
+	}
+	
+	public int getMaxValue() {
+	    return values.length - 1;
 	}
 	
 }
