@@ -48,7 +48,7 @@ public class DataLoader {
 	}
 	
 	private static Stream<String> getDataLines(String problemID) {
-		String fileName = "/data/" + problemID + ".data";
+		String fileName = "/de/darkened/projecteuler/data/" + problemID + ".data";
 		try {
 			return Files.lines(Paths.get(DataLoader.class.getResource(fileName).toURI()));
 		} catch (IOException | URISyntaxException e) {
