@@ -1,6 +1,7 @@
 package de.darkened.projecteuler.problems.unsolved;
 
 import java.util.Arrays;
+import java.util.stream.LongStream;
 
 import de.darkened.projecteuler.util.Timer;
 
@@ -11,87 +12,53 @@ public class P0542 {
     public static void main(String[] args) {
         Timer.start();
         
-        int n = 100000000;
-        squareTable = new long[1000];
-        for (long i = 0; i < 1000; i++) squareTable[(int) i] = i * i;
-
-        int t = 0;
-        int lastMaxSum = 0;
-        int skipped = 0;
-        int newMaxCount = 0;
-        int overallCount = 0;
-        int maxBase = 0;
-        int maxExp = 0;
-        int maxFactor = 0;
-        for (int k = 4; k <= n; k++) {
+        long maxN = 100000000000000000L;
+        int maxBaseExclusive = 90;
+        int maxFactor = 1000;
+        int maxExp = 25;
+        
+        squareTable = new long[maxBaseExclusive];
+        for (long i = 0; i < maxBaseExclusive; i++) squareTable[(int) i] = i * i;
+        
+        double logMaxN = Math.log(maxN);
+        Iterable<Long> kGenerator = LongStream.range(2, maxBaseExclusive).
+                flatMap(base -> LongStream.rangeClosed(2, Math.min(maxExp, (long) (logMaxN / Math.log(base)))).
+                        map(exp -> (long) Math.pow(base, exp))).
+                flatMap(power -> LongStream.rangeClosed(1, Math.min(maxFactor, maxN / power)).
+                        map(factor -> factor * power)).
+                distinct().
+                filter(k -> k >= 4).
+                sorted()::iterator;
+        
+        long t = 0;
+        long lastMaxSum = 0;
+        long lastMaxK = 4;
+        for (long k : kGenerator) {
             int[] possibleBases = getPossibleBases(k);
-            int maxSum = lastMaxSum;
-            int currMaxBase = 0;
-            int baseOfMaxSum = 0;
-            int currMaxExp = 0;
-            int currMaxFactor = 0;
+            long currMaxSum = 0;
             for (int base : possibleBases) {
-                int sum = calculateSequenceSum(k, base);
-                if (sum > lastMaxSum) {
-                    newMaxCount++;
-//                    System.out.println("+++ " + termStr(k, base) + " .. " + sum);
-                } else {
-                    overallCount++;
-//                    System.out.println("    " + termStr(k, base) +  " .. " + sum);
-                }
-                if (sum > maxSum) {
-                    if (base > currMaxBase) {
-                        currMaxBase = base;
-                    }
-                    int exp = log(k, base);
-                    if (exp > currMaxExp) {
-                        currMaxExp = exp;
-                    }
-                    int factor = getFactor(k, base);
-                    if (factor > currMaxFactor) {
-                        currMaxFactor = factor;
-                    }
-                    maxSum = sum;
-                    baseOfMaxSum = base;
+                long sum = calculateSequenceSum(k, base);
+                if (sum > currMaxSum) {
+                    currMaxSum = sum;
                 }
             }
-            if (currMaxBase > maxBase) {
-                maxBase = currMaxBase;
-                System.out.println("maxBase: " + maxBase + "(" + k + ")");
-            }
-            if (currMaxExp > maxExp) {
-                maxExp = currMaxExp;
-                System.out.println("maxExp: " + maxExp + "(" + k + ")");
-            }
-            if (currMaxFactor > maxFactor) {
-                maxFactor = currMaxFactor;
-                System.out.println("maxFactor: " + maxFactor + "(" + k + ")");
-            }
-            if (maxSum > lastMaxSum) {
-                System.out.println("--> " + k + ": " + maxSum + " (" + baseOfMaxSum + ")");
-                if (skipped % 2 == 0)
+            if (currMaxSum > lastMaxSum) {
+                System.out.println("--> " + k + ": " + currMaxSum);
+                if ((k - lastMaxK) % 2 != 0)
                     t += (k % 2 == 0 ? -1 : 1) * lastMaxSum;
-//                System.out.println("T_ " + (t + (k % 2 == 0 ? 1 : -1) * maxSum));
-                skipped = 0;
-                lastMaxSum = maxSum;
-            } else {
-                skipped++;
+                lastMaxSum = currMaxSum;
+                lastMaxK = k;
             }
-//            System.out.println("---------------------------------------------------");
-            
         }
-        if (skipped % 2 == 0)
-            t += (n % 2 == 0 ? 1 : -1) * lastMaxSum;
+        if ((maxN + 1 - lastMaxK) % 2 != 0) {
+            t += (maxN % 2 == 0 ? 1 : -1) * lastMaxSum;
+        }
         System.out.println(t);
-        System.out.println(newMaxCount + "/" + overallCount);
-        System.out.println("max base: " + maxBase);
-        System.out.println("max exp: " + maxExp);
-        System.out.println("max factor: " + maxFactor);
 
         Timer.stop();
     }
     
-    private static int[] getPossibleBases(int n) {
+    private static int[] getPossibleBases(long n) {
         int rootN = Math.min(squareTable.length - 1, (int) Math.sqrt(n));
         int[] bases = new int[0];
         for (int i = rootN; i >= 2; i--) {
@@ -103,38 +70,13 @@ public class P0542 {
         return bases;
     }
     
-    private static int calculateSequenceSum(int k, int base) {
-        int sum = k;
+    private static long calculateSequenceSum(long k, int base) {
+        long sum = k;
         while (k % base == 0) {
             k = k / base * (base - 1);
             sum += k;
         }
         return sum;
-    }
-    
-    private static String termStr(int k, int base) {
-        int exp = 0;
-        while (k % base == 0) {
-            exp++;
-            k /= base;
-        }
-        return k + "*" + base + "^" + exp;
-    }
-    
-    private static int log(int k, int base) {
-        int exp = 0;
-        while (k % base == 0) {
-            exp++;
-            k /= base;
-        }
-        return exp;
-    }
-    
-    private static int getFactor(int k, int base) {
-        while (k % base == 0) {
-            k /= base;
-        }
-        return k;
     }
     
 }
