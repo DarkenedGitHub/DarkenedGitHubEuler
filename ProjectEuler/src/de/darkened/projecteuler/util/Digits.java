@@ -23,22 +23,31 @@ public class Digits {
     }
     
     public static boolean isNDigitPandigital(int number) {
+        return isNDigitPandigital(number, false);
+    }
+    
+    public static boolean isNDigitPandigital(long number, boolean withZero) {
+        boolean foundZero = false;
         int digitMask = 1;
-        int rest = number;
-        int resultingMask = 2;
+        long rest = number;
+        int resultingMask = withZero ? 1 : 2;
         while (rest > 0) {
             resultingMask = resultingMask << 1;
-            int digit = rest % 10;
-            int mask = 1 << digit;
-            if ((digitMask & mask) == 0) {
-                digitMask += mask;
+            int digit = (int) (rest % 10);
+            if (digit == 0) {
+                foundZero = true;
             } else {
-                return false;
+                int mask = 1 << digit;
+                if ((digitMask & mask) == 0) {
+                    digitMask += mask;
+                } else {
+                    return false;
+                }
             }
             rest /= 10;
         }
         resultingMask--;
-        return digitMask == resultingMask;
+        return digitMask == resultingMask && (!withZero || foundZero);
     }
 
     public static int horner(int number, int base, int[] digits) {
