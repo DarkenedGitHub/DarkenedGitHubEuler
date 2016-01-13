@@ -4,7 +4,15 @@ import java.util.Arrays;
 
 public class DivisorFinder {
 	
-	private PrimeTable primeTable = new PrimeTable();
+	private PrimeTable primeTable;
+	
+	public DivisorFinder(PrimeTable _primeTable) {
+	    primeTable = _primeTable;
+	}
+	
+	public DivisorFinder() {
+	    this(new PrimeTable());
+	}
 	
 	public int getDivisorSum(int number) {
 		int sum = 0;
@@ -58,6 +66,10 @@ public class DivisorFinder {
 			}
 		}
 		return result;
+	}
+	
+	public int[] getPrimeFactors(int x) {
+	    return getPrimeFactorsWithCounts(x)[0];
 	}
 
 	private int[][] getPrimeFactorsWithCounts(int x) {

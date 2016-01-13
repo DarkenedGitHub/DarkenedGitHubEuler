@@ -44,5 +44,13 @@ public class PrimeTable {
 	public boolean isPrime(int number) {
 	    return sieve.isValid(number);
 	}
+	
+	public int primesBelow(int bound) {
+	    int primesBelow = 0;
+	    while (getPrime(primesBelow) < bound) {
+	        primesBelow++;
+	    }
+	    return primesBelow;
+	}
 
 }
