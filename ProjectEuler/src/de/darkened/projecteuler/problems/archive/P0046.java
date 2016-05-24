@@ -1,4 +1,4 @@
-package de.darkened.projecteuler.problems;
+package de.darkened.projecteuler.problems.archive;
 
 import de.darkened.projecteuler.util.PrimeSieve;
 import de.darkened.projecteuler.util.Timer;

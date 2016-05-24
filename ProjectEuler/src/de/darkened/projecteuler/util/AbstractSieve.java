@@ -40,8 +40,8 @@ public abstract class AbstractSieve {
 	private void fill(int bound) {
 		for (int i = maxCheckedValue + fillStepWidth; i <= bound; i += fillStepWidth) {
 			values[i] = processValue(i, values[i]);
+			maxCheckedValue = i;
 		}
-		maxCheckedValue = bound;
 	}
 	
 	// override this for more complex logic

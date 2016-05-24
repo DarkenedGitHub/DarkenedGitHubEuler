@@ -1,8 +1,9 @@
 package de.darkened.projecteuler.util;
 
 import java.util.Arrays;
+import java.util.Iterator;
 
-public class PrimeTable {
+public class PrimeTable implements Iterable<Integer> {
 	
 	private PrimeSieve sieve;
 	private int[] primes = new int[] {2, 3};
@@ -52,5 +53,28 @@ public class PrimeTable {
 	    }
 	    return primesBelow;
 	}
+
+    @Override
+    public Iterator<Integer> iterator() {
+        return new Iterator<Integer>() {
+            
+            private int primeIndex = 0;
+
+            @Override
+            public boolean hasNext() {
+                try {
+                    getPrime(primeIndex);
+                    return true;
+                } catch (IllegalArgumentException e) {
+                    return false;
+                }
+            }
+
+            @Override
+            public Integer next() {
+                return getPrime(primeIndex++);
+            }
+        };
+    }
 
 }
