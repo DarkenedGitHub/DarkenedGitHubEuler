@@ -11,14 +11,14 @@ import java.util.stream.Stream;
 
 public class DataLoader {
 	
-	public static int[] getNumberGridSerial(String problemID) {
+	public static int[] getNumberGridSerial(String problemID, String limiter) {
 		return getDataLines(problemID).flatMapToInt(
-				line -> Arrays.stream(line.split(" ")).mapToInt(Integer::valueOf)).toArray();
+				line -> Arrays.stream(line.split(limiter)).mapToInt(Integer::valueOf)).toArray();
 	}
 	
 	public static int[][] getNumberTriangle(String problemID) {
 		// read as sequence and convert back to triangle form 
-		int[] numbers = getNumberGridSerial(problemID);
+		int[] numbers = getNumberGridSerial(problemID, " ");
 		int rowCount = (int) (Math.sqrt(2 * numbers.length + 0.25) - 0.5);
 		int[][] triangle = new int[rowCount][];
 		int numberIndex = 0;

@@ -6,7 +6,7 @@ import de.darkened.projecteuler.util.Timer;
 public class P0011 {
 	
 	public static void main(String[] args) {
-		int[] grid = DataLoader.getNumberGridSerial(P0011.class.getSimpleName());
+		int[] grid = DataLoader.getNumberGridSerial(P0011.class.getSimpleName(), " ");
 		Timer.start();
 		
 		int gridSize = 20;
