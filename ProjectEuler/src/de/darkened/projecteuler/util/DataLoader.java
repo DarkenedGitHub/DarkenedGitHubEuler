@@ -47,7 +47,7 @@ public class DataLoader {
 		return getDataLines(problemID).reduce("", String::concat);
 	}
 	
-	private static Stream<String> getDataLines(String problemID) {
+	public static Stream<String> getDataLines(String problemID) {
 		String fileName = "/de/darkened/projecteuler/data/" + problemID + ".data";
 		try {
 			return Files.lines(Paths.get(DataLoader.class.getResource(fileName).toURI()));
