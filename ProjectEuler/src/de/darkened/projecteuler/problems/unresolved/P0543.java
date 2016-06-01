@@ -1,4 +1,4 @@
-package de.darkened.projecteuler.problems;
+package de.darkened.projecteuler.problems.unresolved;
 
 import de.darkened.projecteuler.util.PrimeTable;
 import de.darkened.projecteuler.util.Timer;
