@@ -78,4 +78,14 @@ public class Digits {
         return sum;
     }
 
+    public static int digitSquareSum(int number) {
+        int sum = 0;
+        while (number > 0) {
+            int digit = number % 10;
+            sum += digit * digit;
+            number /= 10;
+        }
+        return sum;
+    }
+
 }
