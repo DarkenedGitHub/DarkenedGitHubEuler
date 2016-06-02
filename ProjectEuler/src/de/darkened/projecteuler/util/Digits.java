@@ -69,6 +69,15 @@ public class Digits {
         return true;
     }
     
+    public static long reverse(long current) {
+        long reverse = 0;
+        while (current > 0) {
+            reverse = reverse * 10 + current % 10;
+            current /= 10;
+        }
+        return reverse;
+    }
+    
     public static int digitSum(int number) {
         int sum = 0;
         while (number > 0) {
