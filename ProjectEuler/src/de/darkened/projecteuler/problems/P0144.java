@@ -1,8 +1,11 @@
 package de.darkened.projecteuler.problems;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import de.darkened.projecteuler.util.Timer;
+import javafx.util.Pair;
 
 public class P0144 {
 
@@ -10,6 +13,7 @@ public class P0144 {
         Timer.start();
 
         int count = 0;
+        List<Pair<Double, Double>> points = new ArrayList<>();
         // initially linear equation from two points
         double startX = 0.0;
         double startY = 10.1;
@@ -17,31 +21,26 @@ public class P0144 {
         double currentY = -9.6;
         double currentM = (currentY - startY) / (currentX - startX);
         double currentN = currentY - currentM * currentX;
-        System.out.format("%2.2f | %2.2f\n", currentX, currentY);
+        System.out.format("%2.5f | %2.5f\n", currentX, currentY);
         // loop while not hitting the hole
         while (Math.abs(currentX) > 0.01 || currentY < 0) {
             count++;
+            points.add(new Pair<>(currentX, currentY));
             double tangentM = -4 * currentX / currentY;
-            double normalM = -1 / tangentM;
-            double currentAlpha = Math.atan(currentM);
-            double normalAlpha = Math.atan(normalM);
-            double nextAlpha = 2 * normalAlpha - currentAlpha;
+            double tana = (currentM - tangentM) / (1 + currentM * tangentM);
+            currentM = (tangentM - tana) / (tana * tangentM + 1);
             // calculate next linear equation (from slope and point)
-            currentM = Math.tan(nextAlpha);
             currentN = currentY - currentM * currentX;
             // calculate intersection between ellipse and linear equation
             double a = 4 + currentM * currentM;
             double b = 2 * currentM * currentN;
             double c = currentN * currentN - 100;
-            double pdiv2 = b / a / 2;
-            double q = c / a;
-            double rootPart = Math.sqrt(pdiv2 * pdiv2 - q);
-            double resX1 = -pdiv2 + rootPart;
-            double resX2 = -pdiv2 - rootPart;
+            double resX1 = (-b + Math.sqrt(b * b - 4 * a * c)) / (2 * a);
+            double resX2 = (-b - Math.sqrt(b * b - 4 * a * c)) / (2 * a);
             // calculate next point
             currentX = Math.abs(resX1 - currentX) < Math.abs(resX2 - currentX) ? resX2 : resX1;
             currentY = currentM * currentX + currentN;
-            System.out.format("%2d: %2.2f | %2.2f\n", count, currentX, currentY);
+            System.out.format("%2d: %2.5f | %2.5f\n", count, currentX, currentY);
         }
         System.out.println(count);
 
